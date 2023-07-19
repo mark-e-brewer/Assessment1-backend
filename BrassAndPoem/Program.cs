@@ -62,13 +62,13 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
     foreach (Product product in products)
     {
         string productTypeName = productTypes.FirstOrDefault(pt => pt.id == product.productTypeId)?.title;
-        Console.WriteLine($"ID: {product.productTypeId}, Name: {product.name}, Type: {productTypeName}, Price: ${product.price}");
+        Console.WriteLine($"Name: {product.name}, Type: {productTypeName}, Price: ${product.price}");
     }
 }
 
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 {
-
+    throw new NotImplementedException();
 }
 
 void AddProduct(List<Product> products, List<ProductType> productTypes)
@@ -88,21 +88,39 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
         Console.WriteLine("Invalid product type ID. Product not added.");
         return;
     }
+
     Product newProduct = new Product
     {
         name = name,
         price = price,
         productTypeId = productTypeId
     };
-    int newProductId = products.Count + 1;
-    newProduct.productTypeId = newProductId;
+
     products.Add(newProduct);
+
+
     Console.WriteLine("Product added successfully!");
 }
 
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Console.WriteLine("\n-- Update Product --");
+    Console.WriteLine("Select Product to Update: ");
+
+    foreach (Product product in products)
+    {
+        string productTypeName = productTypes.FirstOrDefault(pt => pt.id == product.productTypeId)?.title;
+        Console.WriteLine($"Name: {product.name}, Type: {productTypeName}, Price: ${product.price}");
+    }
+    int selectedProductId = int.Parse(Console.ReadLine());
+    for (int i = 0; i < products.Count; i++) 
+    {
+        if (selectedProductId = products[i + 1]) 
+        {
+            Console.WriteLine(products[i]);
+        }
+    }
+
 }
 
 // don't move or change this!
