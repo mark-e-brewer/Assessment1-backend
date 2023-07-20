@@ -68,7 +68,33 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
 
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Console.WriteLine("\n-- Delete Product --");
+
+    if (products.Count == 0)
+    {
+        Console.WriteLine("No products available for deletion.");
+    }
+
+    Console.WriteLine("Available Products: ");
+    for (int i = 0; i < products.Count; i++)
+    {
+        string productTypeName = productTypes.FirstOrDefault(prod => prod.id == products[i].productTypeId)?.title;
+        Console.WriteLine($"{i + 1}. ID: {products[i].productTypeId}, Name: {products[i].name}, Type: {productTypeName}, Price: ${products[i].price}");
+    }
+
+    Console.Write("\nEnter the index of the product to delete (1 to " + products.Count + "): ");
+    int productIndexToDelete = int.Parse(Console.ReadLine()) - 1;
+
+    if (productIndexToDelete < 0 || productIndexToDelete >= products.Count)
+    {
+        Console.WriteLine("Invalid product index. Product not deleted.");
+        return;
+    }
+
+    Product productToDelete = products[productIndexToDelete];
+    products.Remove(productToDelete);
+
+    Console.WriteLine("Product deleted successfully!");
 }
 
 void AddProduct(List<Product> products, List<ProductType> productTypes)
@@ -139,7 +165,7 @@ void UpdateProduct(List<Product> products, List<ProductType> productTypes)
         productToUpdate.price = newPrice;
     }
 
-    Console.WriteLine("Enter the updated product type ID (or press Enter to leave unchanged): ");
+    Console.WriteLine("Enter the updated product type ID (1 = Poem 2 = Brass or press Enter to leave unchanged): ");
     string newProductTypeIdInput = Console.ReadLine();
     if (!string.IsNullOrWhiteSpace(newProductTypeIdInput) && int.TryParse(newProductTypeIdInput, out int newProductTypeId))
     {
