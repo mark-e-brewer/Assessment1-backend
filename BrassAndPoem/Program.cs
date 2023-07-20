@@ -14,11 +14,11 @@ List<ProductType> productTypes = new List<ProductType>
 
 List<Product> products = new List<Product>
 {
-    new Product { name = "poety book", productTypeId = 1, price = 4.99 },
-    new Product { name = "trumpet", productTypeId = 2, price = 12.99 },
-    new Product { name = "saxophone", productTypeId = 2, price = 14.99 },
-    new Product { name = "flute", productTypeId = 2, price = 8.99 },
-    new Product { name = "book of brass", productTypeId = 1, price = 2.99 },
+    new Product { name = "poety book", productTypeId = 1, price = 4.99m },
+    new Product { name = "trumpet", productTypeId = 2, price = 12.99m },
+    new Product { name = "saxophone", productTypeId = 2, price = 14.99m },
+    new Product { name = "flute", productTypeId = 2, price = 8.99m },
+    new Product { name = "book of brass", productTypeId = 1, price = 2.99m },
 };
 
 int option;
@@ -78,7 +78,7 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
     string name = Console.ReadLine();
 
     Console.WriteLine("Enter Product Price: ");
-    double price = double.Parse(Console.ReadLine());
+    decimal price = decimal.Parse(Console.ReadLine());
 
     Console.WriteLine("Enter Product Type ID (1 = Poem & 2 = Brass): ");
     int productTypeId = int.Parse(Console.ReadLine());
@@ -107,20 +107,53 @@ void UpdateProduct(List<Product> products, List<ProductType> productTypes)
     Console.WriteLine("\n-- Update Product --");
     Console.WriteLine("Select Product to Update: ");
 
+    int index = 0;
     foreach (Product product in products)
     {
         string productTypeName = productTypes.FirstOrDefault(pt => pt.id == product.productTypeId)?.title;
-        Console.WriteLine($"Name: {product.name}, Type: {productTypeName}, Price: ${product.price}");
-    }
-    int selectedProductId = int.Parse(Console.ReadLine());
-    for (int i = 0; i < products.Count; i++) 
-    {
-        if (selectedProductId = products[i + 1]) 
-        {
-            Console.WriteLine(products[i]);
-        }
+        Console.WriteLine($"{index + 1} Name: {product.name}, Type: {productTypeName}, Price: ${product.price}");
+        index++;
     }
 
+    int selectedProductId = int.Parse(Console.ReadLine()) - 1;
+    if (selectedProductId < 0 || selectedProductId > products.Count)
+    {
+        Console.WriteLine("Invalid product index. Product not found.");
+        return;
+    }
+
+    Product productToUpdate = products[selectedProductId];
+
+    Console.WriteLine($"Selected Product: {productToUpdate.name}, Price: {productToUpdate.price}, Type ID: {productToUpdate.productTypeId}");
+    Console.WriteLine("\nEnter the updated name (or press Enter to leave unchanged): ");
+    string newName = Console.ReadLine();
+    if (!string.IsNullOrWhiteSpace(newName)) 
+    {
+        productToUpdate.name = newName;
+    }
+
+    Console.WriteLine("\nEnter the updated price (or press Enter to leave unchanged): ");
+    string newPriceInput = Console.ReadLine();
+    if (!string.IsNullOrWhiteSpace(newPriceInput) && decimal.TryParse(newPriceInput, out decimal newPrice))
+    {
+        productToUpdate.price = newPrice;
+    }
+
+    Console.WriteLine("Enter the updated product type ID (or press Enter to leave unchanged): ");
+    string newProductTypeIdInput = Console.ReadLine();
+    if (!string.IsNullOrWhiteSpace(newProductTypeIdInput) && int.TryParse(newProductTypeIdInput, out int newProductTypeId))
+    {
+        ProductType selectedProductType = productTypes.FirstOrDefault(pt => pt.id == newProductTypeId);
+        if (selectedProductType != null) 
+        {
+            productToUpdate.productTypeId = newProductTypeId;
+        }
+        else
+        {
+            Console.WriteLine("Invalid product type ID. Product type not updated.");
+        }
+    }
+    Console.WriteLine("Product updated successfully!");
 }
 
 // don't move or change this!
